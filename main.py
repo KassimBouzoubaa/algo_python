@@ -1,16 +1,27 @@
-# This is a sample Python script.
+from data.actions import charger_donnees_csv
+from bruteforce import force_brute
+from optimized import dynamic
+import time
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+nom_fichier_csv = "data/dataset1.csv"
+
+donnees = charger_donnees_csv(nom_fichier_csv)
+
+DEPENSE_MAX = 500
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+def run(algo):
+    time_before = time.time()
+    actions_ids, profit = algo(donnees, DEPENSE_MAX)
+    # Affichage des résultats
+    print("Meilleure combinaison:", actions_ids)
+    print("Meilleur profit:", profit)
+    time_after = time.time()
+    print(f"Temps écoulé:", round(time_after - time_before, 2), "secondes")
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+parametre = dynamic
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print(f"Début du programme de {parametre.__name__}")
+run(parametre)
+print(f"Fin du programme de {parametre.__name__}")

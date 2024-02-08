@@ -1,0 +1,34 @@
+Fonction dynamic(actions):
+    DEPENSE_MAX = 500
+
+    # Création de listes pour stocker les coûts et les profits
+    couts = [action["cout"] pour action dans actions.values()]
+    profits = [action["cout"] * action["profit"] / 100 pour action dans actions.values()]
+
+    n = longueur(actions)
+    W = DEPENSE_MAX
+
+    # Initialisation de la table T avec des zéros
+    T = tableau 2D de dimensions (n + 1) x (W + 1) initialisé à 0
+
+    # Remplissage de la table avec la programmation dynamique
+    Pour chaque i de 1 à n:
+        Pour chaque c de 0 à W:
+            Si couts[i - 1] <= c:
+                T[i][c] = maximum(T[i-1][c], T[i-1][c - couts[i - 1]] + profits[i - 1])
+            Sinon:
+                T[i][c] = T[i-1][c]
+
+    # Reconstruction de la meilleure combinaison
+    i, j = n, W
+    meilleure_combinaison = liste vide
+    Tant que i > 0 et j > 0:
+        Si T[i][j] ≠ T[i-1][j]:
+            Ajouter i à meilleure_combinaison
+            j -= couts[i - 1]
+        i -= 1
+
+    # Inversion de l'ordre de la combinaison
+    Inverser meilleure_combinaison
+
+
