@@ -34,14 +34,12 @@ def charger_donnees_csv(nom_fichier):
             # Ignorer l'en-tête
             en_tete = next(lecteur, None)
 
-            compteur = 1
             for ligne in lecteur:
-                identifiant, cout, benefice = ligne
-                actions[compteur] = {
-                    "cout": float(cout),
-                    "benefice": float(benefice),
+                id, cout, benefice = ligne
+                actions[id] = {
+                    "Cout": float(cout),
+                    "Benefice": float(benefice),
                 }
-                compteur += 1
 
         print(f"Données chargées depuis {nom_fichier}.")
         return actions

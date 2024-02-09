@@ -1,49 +1,33 @@
-def dynamic(actions, depense):
-    # Création de listes pour stocker les coûts et les profits
-    couts = [action["cout"] for action in actions.values()]
+def dynamic(actions, budget_max):
+    # Convertir le dictionnaire en une liste de tuples pour faciliter le traitement
+    actions_list = [(int(key), value['Cout'], value['Benefice']) for key, value in actions.items()]
 
-    profits = [
-        action["cout"] * (1 + action["benefice"] / 100) for action in actions.values()
-    ]
+    # Initialisation de la matrice de programmation dynamique pour stocker les résultats intermédiaires
+    dp = [[0] * (budget_max + 1) for _ in range(len(actions_list) + 1)]
 
-    n = len(actions)
-    W = depense
+    # Remplissage de la matrice
+    for i in range(1, len(actions_list) + 1):
+        for budget in range(1, budget_max + 1):
+            # Vérification si l'action peut être incluse avec le budget disponible
+            if actions_list[i - 1][1] <= budget:
+                # Choix entre inclure l'action ou non
+                dp[i][budget] = max(dp[i - 1][budget],
+                                    dp[i - 1][int(budget - actions_list[i - 1][1])] + actions_list[i - 1][2])
 
-    # Initialisation de la table T avec des zéros
-    portefeuilles = [[0] * (W + 1) for _ in range(n + 1)]
-    # comprehension de liste
-    # [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
-    # Remplissage de la table avec la programmation dynamique
-    for nombre_action in range(1, n + 1):
-        for depense_max in range(W + 1):
-            if couts[nombre_action - 1] <= depense_max:
-                valeur_portefeuille_precedent = portefeuilles[nombre_action - 1][
-                    depense_max
-                ]
-                valeur_portefeuille_cout_deduit = portefeuilles[nombre_action - 1][
-                    depense_max - couts[nombre_action - 1]
-                ]
-                profit_derniere_action = profits[nombre_action - 1]
-                portefeuilles[nombre_action][depense_max] = max(
-                    valeur_portefeuille_precedent,
-                    valeur_portefeuille_cout_deduit + profit_derniere_action,
-                )
             else:
-                portefeuilles[nombre_action][depense_max] = portefeuilles[
-                    nombre_action - 1
-                ][depense_max]
+                dp[i][budget] = dp[i - 1][budget]
 
-    # Reconstruction de la meilleure combinaison
-    i, j = n, W
-    action_ids = []
-    while i > 0 and j > 0:
-        if portefeuilles[i][j] != portefeuilles[i - 1][j]:
-            action_ids.append(i)
-            j -= couts[i - 1]
+    # Récupération de la meilleure combinaison d'actions
+    combinaison = []
+    i = len(actions_list)
+    budget = budget_max
+    while i > 0 and budget > 0:
+        if dp[i][int(budget)] != dp[i - 1][int(budget)]:
+            combinaison.append(actions_list[i - 1])
+            budget -= actions_list[i - 1][1]
         i -= 1
+        # Calcul de la somme des bénéfices et des coûts
+    somme_benefices = sum(action[2] for action in combinaison)
+    somme_couts = sum(action[1] for action in combinaison)
 
-    # Inversion de l'ordre de la combinaison
-    action_ids.reverse()
-
-    return action_ids, portefeuilles[n][W]
+    return combinaison, somme_benefices, somme_couts
