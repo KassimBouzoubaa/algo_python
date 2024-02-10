@@ -1,34 +1,25 @@
-Fonction dynamic(actions):
-    DEPENSE_MAX = 500
+FONCTION dynamic(actions, budget_max):
+    actions_dict = transformer les clés en entiers pour faciliter le traitement de actions
+    actions_list = convertir actions_dict en une liste de tuples (id, cout, benefice)
+    initialiser une matrice dp de taille (len(actions_list) + 1) * (budget_max + 1) remplie de 0
 
-    # Création de listes pour stocker les coûts et les profits
-    couts = [action["cout"] pour action dans actions.values()]
-    profits = [action["cout"] * action["profit"] / 100 pour action dans actions.values()]
+    POUR i DE 1 À len(actions_list) + 1 FAIRE:
+        POUR budget DE 1 À budget_max + 1 FAIRE:
+            SI actions_list[i - 1][1] <= budget ALORS:
+                dp[i][budget] = maximum entre dp[i - 1][budget] et dp[i - 1][budget - actions_list[i - 1][1]] + actions_list[i - 1][2]
+            SINON:
+                dp[i][budget] = dp[i - 1][budget]
 
-    n = longueur(actions)
-    W = DEPENSE_MAX
+    initialiser une liste combinaison vide
+    initialiser i à len(actions_list)
+    initialiser budget à budget_max
+    TANT QUE i > 0 ET budget > 0 FAIRE:
+        SI dp[i][budget] != dp[i - 1][budget] ALORS:
+            ajouter le nom de l'action à partir des clés du dictionnaire d'entrée à combinaison
+            réduire budget de actions_list[i - 1][1]
+        décrémenter i
 
-    # Initialisation de la table T avec des zéros
-    T = tableau 2D de dimensions (n + 1) x (W + 1) initialisé à 0
+    initialiser somme_benefices à la somme des bénéfices des actions dans combinaison
+    initialiser somme_couts à la somme des coûts des actions dans combinaison
 
-    # Remplissage de la table avec la programmation dynamique
-    Pour chaque i de 1 à n:
-        Pour chaque c de 0 à W:
-            Si couts[i - 1] <= c:
-                T[i][c] = maximum(T[i-1][c], T[i-1][c - couts[i - 1]] + profits[i - 1])
-            Sinon:
-                T[i][c] = T[i-1][c]
-
-    # Reconstruction de la meilleure combinaison
-    i, j = n, W
-    meilleure_combinaison = liste vide
-    Tant que i > 0 et j > 0:
-        Si T[i][j] ≠ T[i-1][j]:
-            Ajouter i à meilleure_combinaison
-            j -= couts[i - 1]
-        i -= 1
-
-    # Inversion de l'ordre de la combinaison
-    Inverser meilleure_combinaison
-
-
+    RETOURNER combinaison, somme_benefices, somme_couts

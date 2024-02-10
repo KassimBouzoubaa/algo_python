@@ -1,30 +1,18 @@
 import csv
 
-actions = {
-    1: {"cout": 20, "profit": 5},
-    2: {"cout": 30, "profit": 10},
-    3: {"cout": 50, "profit": 15},
-    4: {"cout": 70, "profit": 20},
-    5: {"cout": 60, "profit": 17},
-    6: {"cout": 80, "profit": 25},
-    7: {"cout": 22, "profit": 7},
-    8: {"cout": 26, "profit": 11},
-    9: {"cout": 48, "profit": 13},
-    10: {"cout": 34, "profit": 27},
-    11: {"cout": 42, "profit": 17},
-    12: {"cout": 110, "profit": 9},
-    13: {"cout": 38, "profit": 23},
-    14: {"cout": 14, "profit": 1},
-    15: {"cout": 18, "profit": 3},
-    16: {"cout": 8, "profit": 8},
-    17: {"cout": 4, "profit": 12},
-    18: {"cout": 10, "profit": 14},
-    19: {"cout": 24, "profit": 21},
-    20: {"cout": 114, "profit": 18},
-}
-
 
 def charger_donnees_csv(nom_fichier):
+    """
+    Charge les données à partir d'un fichier CSV contenant des informations sur les actions.
+
+    Args:
+        nom_fichier (str): Le chemin du fichier CSV à charger.
+
+    Returns:
+        dict: Un dictionnaire contenant les informations sur les actions avec leurs coûts et bénéfices.
+              Les actions avec un coût inférieur ou égal à 0 sont ignorées.
+              None est retourné si le fichier spécifié n'est pas trouvé.
+    """
     actions = {}
 
     try:
@@ -37,6 +25,7 @@ def charger_donnees_csv(nom_fichier):
             for ligne in lecteur:
                 id, cout, benefice = ligne
 
+                # Ignorer les actions avec un coût inférieur ou égal à 0
                 if float(cout) > 0:
                     actions[id] = {
                         "Cout": float(cout),
