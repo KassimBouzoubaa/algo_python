@@ -1,9 +1,12 @@
 def dynamic(actions, budget_max):
+    # Transformer les clés en entiers
+    actions_dict = {i + 1: v for i, (k, v) in enumerate(actions.items())}
     # Convertir le dictionnaire en une liste de tuples pour faciliter le traitement
-    actions_list = [(int(key), value['Cout'], value['Benefice']) for key, value in actions.items()]
-
+    actions_list = [(key, value['Cout'], value['Benefice']) for key, value in actions_dict.items()]
+    print(actions_list[0])
     # Initialisation de la matrice de programmation dynamique pour stocker les résultats intermédiaires
     dp = [[0] * (budget_max + 1) for _ in range(len(actions_list) + 1)]
+
 
     # Remplissage de la matrice
     for i in range(1, len(actions_list) + 1):

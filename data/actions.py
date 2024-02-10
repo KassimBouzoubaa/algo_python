@@ -36,10 +36,12 @@ def charger_donnees_csv(nom_fichier):
 
             for ligne in lecteur:
                 id, cout, benefice = ligne
-                actions[id] = {
-                    "Cout": float(cout),
-                    "Benefice": float(benefice),
-                }
+
+                if float(cout) > 0:
+                    actions[id] = {
+                        "Cout": float(cout),
+                        "Benefice": float(benefice),
+                    }
 
         print(f"Données chargées depuis {nom_fichier}.")
         return actions
