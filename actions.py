@@ -25,11 +25,13 @@ def charger_donnees_csv(nom_fichier):
             for ligne in lecteur:
                 id, cout, benefice = ligne
 
+
                 # Ignorer les actions avec un coût inférieur ou égal à 0
                 if float(cout) > 0:
                     actions[id] = {
                         "Cout": float(cout),
                         "Benefice": float(benefice),
+                        "Profit": float(cout) * float(benefice) / 100
                     }
 
         print(f"Données chargées depuis {nom_fichier}.")

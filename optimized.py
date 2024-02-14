@@ -17,7 +17,7 @@ def dynamic(actions, budget_max):
 
     # Convertir le dictionnaire en une liste de tuples
     actions_list = [
-        (key, value["Cout"], value["Benefice"]) for key, value in actions_dict.items()
+        (key, value["Cout"], value["Profit"]) for key, value in actions_dict.items()
     ]
 
     # Initialisation de la matrice de programmation dynamique
@@ -49,7 +49,7 @@ def dynamic(actions, budget_max):
         i -= 1
 
     # Calcul de la somme des bénéfices et des coûts
-    somme_benefices = sum(actions[action]["Benefice"] for action in combinaison)
+    somme_benefices = sum(actions[action]["Profit"] for action in combinaison)
     somme_couts = sum(actions[action]["Cout"] for action in combinaison)
 
     return combinaison, somme_benefices, somme_couts

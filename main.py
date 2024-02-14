@@ -33,7 +33,7 @@ def run_algorithm(algorithm, data, max_spending):
 
 
 # Définir le nom du fichier CSV contenant les données
-csv_file_name = "data/actions.csv"
+csv_file_name = "data/dataset2.csv"
 
 # Charger les données à partir du fichier CSV
 data = charger_donnees_csv(csv_file_name)

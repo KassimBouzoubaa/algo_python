@@ -28,7 +28,7 @@ def force_brute(actions, depense):
     for combinaison_actuelle in toutes_combinaisons:
         # Calculer le coût total et le profit total de la combinaison actuelle
         cout_total = sum(action["Cout"] for _, action in combinaison_actuelle)
-        profit_total = sum(action["Benefice"] for _, action in combinaison_actuelle)
+        profit_total = sum(action["Profit"] for _, action in combinaison_actuelle)
 
         # Vérifier si le coût total est inférieur ou égal à la dépense maximale
         # et si le profit total est supérieur au meilleur profit trouvé jusqu'à présent
